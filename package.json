@@ -1,0 +1,17 @@
+{
+  "name": "entrega_25_11",
+  "version": "1.0.0",
+  "main": "server.js",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
