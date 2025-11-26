@@ -1,0 +1,67 @@
+[
+  {
+    "id": "1764114835486",
+    "title": "Producto prueba",
+    "description": "Producto para pruebas",
+    "code": "P001",
+    "price": 99.9,
+    "status": true,
+    "stock": 20,
+    "category": "test",
+    "thumbnails": [
+      "/img/1.jpg"
+    ]
+  },
+  {
+    "id": "1764115133542",
+    "title": "Producto prueba",
+    "description": "Producto para pruebas",
+    "code": "P001",
+    "price": 99.9,
+    "status": true,
+    "stock": 20,
+    "category": "test",
+    "thumbnails": [
+      "/img/1.jpg"
+    ]
+  },
+  {
+    "id": "1764117386954",
+    "title": "Producto prueba",
+    "description": "Producto para pruebas",
+    "code": "P001",
+    "price": 99.9,
+    "status": true,
+    "stock": 20,
+    "category": "test",
+    "thumbnails": [
+      "/img/1.jpg"
+    ]
+  },
+  {
+    "id": "1764117524090",
+    "title": "Producto prueba",
+    "description": "Descripci�n de prueba",
+    "code": "P001",
+    "price": 99.9,
+    "status": true,
+    "stock": 20,
+    "category": "test",
+    "thumbnails": [
+      "/img/1.jpg"
+    ]
+  },
+  {
+    "id": "1764117844458",
+    "title": "Producto prueba 2",
+    "description": "Descripci�n de prueba 2",
+    "code": "P002",
+    "price": 199.9,
+    "status": true,
+    "stock": 10,
+    "category": "test",
+    "thumbnails": [
+      "/img/2.jpg"
+    ]
+  }
+]
