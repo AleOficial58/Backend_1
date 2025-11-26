@@ -63,5 +63,135 @@
     "thumbnails": [
       "/img/2.jpg"
     ]
+  },
+  {
+    "id": "1764118698475",
+    "title": "Producto prueba 1",
+    "description": "Descripci�n de prueba 1",
+    "code": "P001",
+    "price": 10,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/1.jpg"
+    ]
+  },
+  {
+    "id": "1764118698480",
+    "title": "Producto prueba 2",
+    "description": "Descripci�n de prueba 2",
+    "code": "P002",
+    "price": 20,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/2.jpg"
+    ]
+  },
+  {
+    "id": "1764118698484",
+    "title": "Producto prueba 3",
+    "description": "Descripci�n de prueba 3",
+    "code": "P003",
+    "price": 30,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/3.jpg"
+    ]
+  },
+  {
+    "id": "1764118698488",
+    "title": "Producto prueba 4",
+    "description": "Descripci�n de prueba 4",
+    "code": "P004",
+    "price": 40,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/4.jpg"
+    ]
+  },
+  {
+    "id": "1764118698492",
+    "title": "Producto prueba 5",
+    "description": "Descripci�n de prueba 5",
+    "code": "P005",
+    "price": 50,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/5.jpg"
+    ]
+  },
+  {
+    "id": "1764118698496",
+    "title": "Producto prueba 6",
+    "description": "Descripci�n de prueba 6",
+    "code": "P006",
+    "price": 60,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/6.jpg"
+    ]
+  },
+  {
+    "id": "1764118698501",
+    "title": "Producto prueba 7",
+    "description": "Descripci�n de prueba 7",
+    "code": "P007",
+    "price": 70,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/7.jpg"
+    ]
+  },
+  {
+    "id": "1764118698505",
+    "title": "Producto prueba 8",
+    "description": "Descripci�n de prueba 8",
+    "code": "P008",
+    "price": 80,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/8.jpg"
+    ]
+  },
+  {
+    "id": "1764118698509",
+    "title": "Producto prueba 9",
+    "description": "Descripci�n de prueba 9",
+    "code": "P009",
+    "price": 90,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/9.jpg"
+    ]
+  },
+  {
+    "id": "1764118698514",
+    "title": "Producto prueba 10",
+    "description": "Descripci�n de prueba 10",
+    "code": "P0010",
+    "price": 100,
+    "status": true,
+    "stock": 50,
+    "category": "test",
+    "thumbnails": [
+      "/img/10.jpg"
+    ]
   }
 ]
