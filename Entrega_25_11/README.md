@@ -117,9 +117,3 @@ Reemplaza `{cid}` y `{pid}` por los ids devueltos por las llamadas previas.
   "test:api": "node test_requests.js"
 }
 ```
-
-- También puedo mover los JSON a una carpeta `data/` y actualizar las rutas si prefieres orden.
-
----
-
-Si quieres, creo ahora el `README.md` en tu proyecto (ya lo añadí) y también puedo agregar los scripts npm o mover los JSON a `data/`. ¿Qué prefieres que haga a continuación?
