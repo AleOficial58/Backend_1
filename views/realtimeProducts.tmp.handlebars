@@ -1,0 +1,61 @@
+<div class="container">
+  <h1>Productos en Tiempo Real</h1>
+  <div class="layout">
+    <section class="panel panel-form">
+      <h2>Agregar producto</h2>
+      <form id="addProductForm">
+        <label>Título</label>
+        <input name="title" placeholder="Título" required />
+
+        <label>Descripción</label>
+        <input name="description" placeholder="Descripción" required />
+
+        <label>Código</label>
+        <input name="code" placeholder="Código (ej. P001)" required />
+
+        <label>Precio</label>
+        <input name="price" placeholder="Precio" type="number" step="0.01" required />
+
+        <label>Estado</label>
+        <select name="status">
+          <option value="true" selected>Activo</option>
+          <option value="false">Inactivo</option>
+        </select>
+
+        <label>Stock</label>
+        <input name="stock" placeholder="Stock" type="number" value="0" />
+
+        <label>Categoría</label>
+        <input name="category" placeholder="Categoría" required />
+
+        <label>Thumbnails (separadas por comas)</label>
+        <input name="thumbnails" placeholder="/img/1.jpg, /img/2.jpg" />
+
+        <button type="submit" class="btn primary">Agregar (vía socket)</button>
+      </form>
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+    </section>
+
+    <section class="panel panel-list">
+      <h2>Lista de productos</h2>
+      <ul id="productsList" class="products-grid">
+        {{#each products}}
+          <li class="product-card" data-id="{{this.id}}">
+            <div class="card-header">
+              <strong class="title">{{this.title}}</strong>
+              <span class="price">${{this.price}}</span>
+            </div>
+            <p class="desc">{{this.description}}</p>
+            <p class="meta">Código: <small>{{this.code}}</small> · Categoría: <small>{{this.category}}</small></p>
+            <p class="meta">Stock: <strong>{{this.stock}}</strong></p>
+            <div class="card-actions">
+              <button class="deleteBtn btn danger" data-id="{{this.id}}">Eliminar</button>
+            </div>
+          </li>
+        {{/each}}
+      </ul>
+    </section>
+  </div>
+</div>
+
+<script src="/js/realtime.js"></script>
