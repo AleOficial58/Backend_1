@@ -1,0 +1,9 @@
+<h1>Listado de Productos (Server-side)</h1>
+<ul>
+  {{#each products}}
+    <li>
+      <strong>{{this.title}}</strong> — {{this.description}} — ${{this.price}} — Stock: {{this.stock}}
+    </li>
+  {{/each}}
+</ul>
+<p><a href="/realtimeproducts">Ir a Realtime Products (WebSockets)</a></p>
