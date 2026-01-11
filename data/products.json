@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "1768091501395",
+    "title": "23232",
+    "description": "2312",
+    "code": "123213",
+    "price": 213,
+    "status": true,
+    "stock": 0,
+    "category": "Abuela",
+    "thumbnails": []
+  }
+]

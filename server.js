@@ -3,6 +3,7 @@ const path = require('path');
 const http = require('http');
 const { Server } = require('socket.io');
 const exphbs = require('express-handlebars');
+const { connectDB } = require('./src/config/mongodb');
 const ProductManager = require('./src/managers/ProductManager');
 
 const app = express();
@@ -10,8 +11,28 @@ const server = http.createServer(app);
 const io = new Server(server);
 const PORT = 8080;
 
+// Conectar a MongoDB
+connectDB();
+
 // view engine
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main' }));
+const hbs = exphbs.create({
+  defaultLayout: 'main',
+  helpers: {
+    multiply: (a, b) => a * b,
+    cartTotal: (products) => {
+      if (!products) return 0;
+      return products.reduce((sum, p) => sum + (p.product?.price || 0) * p.quantity, 0).toFixed(2);
+    },
+    totalItems: (products) => {
+      if (!products) return 0;
+      return products.reduce((sum, p) => sum + p.quantity, 0);
+    },
+    eq: (a, b) => a === b,
+    neq: (a, b) => a !== b
+  }
+});
+
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -36,8 +57,8 @@ io.on('connection', (socket) => {
 
   // client requests current products
   socket.on('requestProducts', async () => {
-    const all = await pm.getAll();
-    socket.emit('updateProducts', all);
+    const result = await pm.getAll();
+    socket.emit('updateProducts', result.payload);
   });
 
   // new product via socket
@@ -46,8 +67,8 @@ io.on('connection', (socket) => {
       // basic server-side validation
       if (!data.title || !data.description) return;
       await pm.addProduct(data);
-      const all = await pm.getAll();
-      io.emit('updateProducts', all);
+      const result = await pm.getAll();
+      io.emit('updateProducts', result.payload);
     } catch (err) {
       console.error('error newProduct', err);
     }
@@ -57,10 +78,23 @@ io.on('connection', (socket) => {
   socket.on('deleteProduct', async (id) => {
     try {
       await pm.deleteProduct(id);
-      const all = await pm.getAll();
-      io.emit('updateProducts', all);
+      const result = await pm.getAll();
+      io.emit('updateProducts', result.payload);
     } catch (err) {
       console.error('error deleteProduct', err);
+    }
+  });
+
+  // update product via socket (realtime edit)
+  socket.on('updateProduct', async (data) => {
+    try {
+      const { id, updates } = data || {};
+      if (!id) return;
+      await pm.updateProduct(id, updates);
+      const result = await pm.getAll();
+      io.emit('updateProducts', result.payload);
+    } catch (err) {
+      console.error('error updateProduct', err);
     }
   });
 });

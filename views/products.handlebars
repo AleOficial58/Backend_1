@@ -1,12 +1,9 @@
 <div class="container">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-    <h1 style="margin:0;">Catálogo de Productos</h1>
-    <a href="/realtimeproducts" class="btn btn-primary">Panel Admin</a>
-  </div>
+  <h1>Catálogo de Productos</h1>
   
   <!-- Filtros y búsqueda -->
   <div class="filters">
-    <form method="get" action="/">
+    <form method="get" action="/products">
       <div class="filter-group">
         <label for="query">Categoría/Disponibilidad:</label>
         <input type="text" id="query" name="query" placeholder="Ej: electronics, true" />
@@ -83,7 +80,30 @@
 
 <script>
   function addToCart(productId) {
-    // Esto será implementado cuando el usuario tenga un carrito actual
-    alert('Función de carrito a implementar. Producto ID: ' + productId);
+    // Obtener o crear carrito (guardado en localStorage para ejemplo)
+    let cartId = localStorage.getItem('cartId');
+    
+    if (!cartId) {
+      // Crear nuevo carrito
+      fetch('/api/carts', { method: 'POST' })
+        .then(res => res.json())
+        .then(cart => {
+          localStorage.setItem('cartId', cart._id);
+          addProductToCart(cart._id, productId);
+        })
+        .catch(err => alert('Error al crear carrito: ' + err.message));
+    } else {
+      addProductToCart(cartId, productId);
+    }
+  }
+  
+  function addProductToCart(cartId, productId) {
+    fetch(`/api/carts/${cartId}/products/${productId}`, { method: 'POST' })
+      .then(res => res.json())
+      .then(cart => {
+        alert('Producto agregado al carrito');
+        window.location.href = `/carts/${cartId}`;
+      })
+      .catch(err => alert('Error al agregar al carrito: ' + err.message));
   }
 </script>

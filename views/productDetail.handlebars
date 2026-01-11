@@ -1,0 +1,89 @@
+<div class="container">
+  {{#if product}}
+    <div class="product-detail">
+      <a href="/" class="btn btn-back">← Volver al catálogo</a>
+      
+      <div class="product-info">
+        <h1>{{product.title}}</h1>
+        
+        <div class="detail-section">
+          <h3>Descripción</h3>
+          <p>{{product.description}}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h3>Información del Producto</h3>
+          <ul>
+            <li><strong>Código:</strong> {{product.code}}</li>
+            <li><strong>Categoría:</strong> {{product.category}}</li>
+            <li><strong>Precio:</strong> <span class="price-large">${{product.price}}</span></li>
+            <li><strong>Stock:</strong> {{product.stock}} unidades</li>
+            <li>
+              <strong>Estado:</strong> 
+              {{#if product.status}}
+                <span class="badge-active">Disponible</span>
+              {{else}}
+                <span class="badge-inactive">No disponible</span>
+              {{/if}}
+            </li>
+          </ul>
+        </div>
+        
+        {{#if product.thumbnails.length}}
+          <div class="detail-section">
+            <h3>Imágenes</h3>
+            <div class="thumbnails">
+              {{#each product.thumbnails}}
+                <img src="{{this}}" alt="{{../product.title}}" class="thumbnail" />
+              {{/each}}
+            </div>
+          </div>
+        {{/if}}
+        
+        <div class="product-actions">
+          {{#if product.stock}}
+            <button class="btn btn-success btn-large" onclick="addToCart('{{product._id}}')">
+              Agregar al Carrito
+            </button>
+          {{else}}
+            <button class="btn btn-disabled" disabled>
+              Sin stock
+            </button>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <p class="error">Producto no encontrado</p>
+  {{/if}}
+</div>
+
+<script>
+  function addToCart(productId) {
+    // Obtener o crear carrito (guardado en localStorage para ejemplo)
+    let cartId = localStorage.getItem('cartId');
+    
+    if (!cartId) {
+      // Crear nuevo carrito
+      fetch('/api/carts', { method: 'POST' })
+        .then(res => res.json())
+        .then(cart => {
+          localStorage.setItem('cartId', cart._id);
+          addProductToCart(cart._id, productId);
+        })
+        .catch(err => alert('Error al crear carrito: ' + err.message));
+    } else {
+      addProductToCart(cartId, productId);
+    }
+  }
+  
+  function addProductToCart(cartId, productId) {
+    fetch(`/api/carts/${cartId}/products/${productId}`, { method: 'POST' })
+      .then(res => res.json())
+      .then(cart => {
+        alert('Producto agregado al carrito');
+        window.location.href = `/carts/${cartId}`;
+      })
+      .catch(err => alert('Error al agregar al carrito: ' + err.message));
+  }
+</script>

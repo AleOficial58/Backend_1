@@ -1,30 +1,87 @@
-<h1>Realtime Products</h1>
-<div>
-  <form id="addProductForm">
-    <input name="title" placeholder="Título" required />
-    <input name="description" placeholder="Descripción" required />
-    <input name="code" placeholder="Código" required />
-    <input name="price" placeholder="Precio" type="number" step="0.01" required />
-    <input name="status" placeholder="Estado" type="text" value="true" />
-    <input name="stock" placeholder="Stock" type="number" value="0" />
-    <input name="category" placeholder="Categoría" required />
-    <input name="thumbnails" placeholder="Miniaturas (CSV)" />
-    <button type="submit">Agregar producto (vía socket)</button>
-  </form>
+<div class="container">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h1 style="margin:0;">Realtime Products (Admin)</h1>
+    <a href="/" class="btn btn-secondary">Ir al Catálogo</a>
+  </div>
+
+  <section class="admin-actions" style="margin-bottom:18px;">
+    <button id="openCreateBtn" class="btn btn-primary">Nuevo Producto</button>
+  </section>
+
+  <section>
+    <div id="productsGrid" class="products-grid">
+      {{#each products}}
+        <div class="product-card" data-id="{{this._id}}">
+          <h3>{{this.title}}</h3>
+          <p class="description">{{this.description}}</p>
+          <p class="price">Precio: <strong>${{this.price}}</strong></p>
+          <p class="category">Categoria: {{this.category}}</p>
+          <p class="stock">Stock: {{this.stock}}</p>
+          <div class="product-actions">
+            <button class="btn btn-primary editBtn" data-id="{{this._id}}">Editar</button>
+            <button class="btn btn-danger deleteBtn" data-id="{{this._id}}">Eliminar</button>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </section>
+
+  <!-- Edit/Create Modal -->
+  <div id="realtimeEditModal" class="cp-modal" aria-hidden="true">
+    <div class="cp-modal-content">
+      <button class="cp-modal-close" data-action="close-modal" data-target="realtimeEditModal">✕</button>
+      <h2 id="realtimeModalTitle">Editar Producto</h2>
+      <form id="realtimeEditForm">
+        <input type="hidden" name="pid" value="" />
+        <fieldset style="border:1px solid #ccc; padding:12px; border-radius:4px; margin-bottom:12px;">
+          <legend style="font-weight:bold; padding:0 8px;">Información General</legend>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Título *</label>
+            <input name="title" type="text" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px;" />
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Descripción *</label>
+            <textarea name="description" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px; min-height:80px;"></textarea>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Código *</label>
+            <input name="code" type="text" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px;" />
+          </div>
+        </fieldset>
+        <fieldset style="border:1px solid #ccc; padding:12px; border-radius:4px; margin-bottom:12px;">
+          <legend style="font-weight:bold; padding:0 8px;">Precios y Stock</legend>
+          <div style="display:flex; gap:12px; margin-bottom:12px;">
+            <div style="flex:1;">
+              <label style="font-weight:bold; display:block; margin-bottom:4px;">Precio *</label>
+              <input name="price" type="number" step="0.01" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px;" />
+            </div>
+            <div style="flex:1;">
+              <label style="font-weight:bold; display:block; margin-bottom:4px;">Stock *</label>
+              <input name="stock" type="number" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px;" />
+            </div>
+          </div>
+        </fieldset>
+        <fieldset style="border:1px solid #ccc; padding:12px; border-radius:4px; margin-bottom:12px;">
+          <legend style="font-weight:bold; padding:0 8px;">Clasificación</legend>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:bold; display:block; margin-bottom:4px;">Categoría *</label>
+            <input name="category" type="text" required style="width:100%; padding:8px; border:1px solid #bbb; border-radius:4px;" />
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-weight:bold; display:flex; align-items:center; gap:8px;">
+              <input name="status" type="checkbox" />
+              <span>Producto Activo</span>
+            </label>
+          </div>
+        </fieldset>
+        <div style="display:flex; gap:8px;">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" id="cancelRealtimeEdit" class="btn btn-secondary" data-action="close-modal" data-target="realtimeEditModal">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
 
-<hr />
-
-<div>
-  <h2>Productos</h2>
-  <ul id="productsList">
-    {{#each products}}
-      <li data-id="{{this.id}}">
-        <strong>{{this.title}}</strong> — ${{this.price}} — Stock: {{this.stock}}
-        <button class="deleteBtn" data-id="{{this.id}}">Eliminar</button>
-      </li>
-    {{/each}}
-  </ul>
-</div>
-
-<script src="/js/realtime.js"></script>
+<script src="/js/realtime.js" defer></script>

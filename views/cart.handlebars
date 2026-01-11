@@ -1,0 +1,220 @@
+<div class="container">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h1 style="margin:0;">Carrito de Compras</h1>
+    <a href="/" class="btn btn-secondary">← Volver al Catálogo</a>
+  </div>
+  
+  {{#if cart.products.length}}
+    <div class="cart-items">
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each cart.products}}
+            <tr>
+              <td>
+                <strong>{{this.product.title}}</strong>
+                <br />
+                <small>{{this.product.category}}</small>
+              </td>
+              <td>${{this.product.price}}</td>
+              <td>
+                <input 
+                  type="number" 
+                  min="1" 
+                  value="{{this.quantity}}" 
+                  class="quantity-input"
+                  data-cart-id="{{../cartId}}"
+                  data-product-id="{{this.product._id}}"
+                  onchange="updateQuantity(this)"
+                />
+              </td>
+              <td class="subtotal">${{multiply this.product.price this.quantity}}</td>
+              <td>
+                <button 
+                  class="btn btn-danger btn-small"
+                  onclick="removeProduct('{{../cartId}}', '{{this.product._id}}')"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      
+      <div class="cart-summary">
+        <h3>Resumen</h3>
+        <p><strong>Total de artículos:</strong> <span id="totalItems">{{totalItems cart.products}}</span></p>
+        <p class="total"><strong>Total:</strong> $<span id="cartTotal">{{cartTotal cart.products}}</span></p>
+      </div>
+      
+      <div class="cart-actions" style="display:flex; gap:10px;">
+        <button class="btn btn-warning" onclick="clearCartConfirm('{{cartId}}')">
+          Vaciar Carrito
+        </button>
+        <button class="btn btn-success btn-large" onclick="finalizePurchase('{{cartId}}')">
+          Finalizar Compra
+        </button>
+      </div>
+    </div>
+  {{else}}
+    <div style="text-align:center; padding:40px;">
+      <p class="empty-cart" style="font-size:18px; margin-bottom:20px;">El carrito está vacío</p>
+      <a href="/" class="btn btn-primary">Volver al Catálogo</a>
+    </div>
+  {{/if}}
+</div>
+
+<script>
+  function updateQuantity(input) {
+    const cartId = input.dataset.cartId;
+    const productId = input.dataset.productId;
+    const quantity = parseInt(input.value);
+    
+    if (quantity < 1) {
+      removeProduct(cartId, productId);
+      return;
+    }
+    
+    fetch(`/api/carts/${cartId}/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quantity })
+    })
+      .then(res => res.json())
+      .then(() => {
+        Swal.fire({
+          title: 'Actualizado',
+          text: 'Cantidad actualizada correctamente',
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Error',
+          text: 'Error al actualizar cantidad: ' + err.message,
+          icon: 'error'
+        });
+      });
+  }
+  
+  function removeProduct(cartId, productId) {
+    Swal.fire({
+      title: '¿Eliminar producto?',
+      text: 'Este producto será removido del carrito',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/api/carts/${cartId}/products/${productId}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(() => {
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'Producto removido del carrito',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            setTimeout(() => location.reload(), 1500);
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Error al eliminar producto: ' + err.message,
+              icon: 'error'
+            });
+          });
+      }
+    });
+  }
+  
+  function clearCartConfirm(cartId) {
+    Swal.fire({
+      title: '¿Vaciar carrito?',
+      text: 'Se eliminarán todos los productos del carrito',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, vaciar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`/api/carts/${cartId}`, { method: 'DELETE' })
+          .then(res => res.json())
+          .then(() => {
+            Swal.fire({
+              title: 'Carrito vaciado',
+              text: 'El carrito ha sido vaciado correctamente',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            setTimeout(() => location.reload(), 1500);
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Error',
+              text: 'Error al vaciar carrito: ' + err.message,
+              icon: 'error'
+            });
+          });
+      }
+    });
+  }
+  
+  function finalizePurchase(cartId) {
+    Swal.fire({
+      title: 'Confirmar Compra',
+      text: '¿Deseas finalizar tu compra?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, comprar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Simular procesamiento de compra
+        Swal.fire({
+          title: 'Procesando...',
+          text: 'Tu compra está siendo procesada',
+          icon: 'info',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        setTimeout(() => {
+          // Vaciar localStorage del carrito
+          localStorage.removeItem('cartId');
+          
+          Swal.fire({
+            title: '¡Compra completada!',
+            text: 'Gracias por tu compra. Serás redirigido al inicio.',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 2000
+          });
+          
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        }, 2000);
+
+      }
+    });
+  }
+</script>

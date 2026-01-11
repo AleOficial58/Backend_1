@@ -1,13 +1,87 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Entrega - API</title>
-    <link rel="stylesheet" href="/styles.css">
-    <script src="/socket.io/socket.io.js"></script>
-  </head>
-  <body>
-    {{{body}}}
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ecommerce - Entrega Final</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/products.js" defer></script>
+</head>
+<body>
+  <header style="background-color: #2c3e50; color: white; padding: 20px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="text-align:center; flex:1;">
+      <h1 style="margin: 0; border: none; padding: 0; color: white;">
+        🛍️ Ecommerce
+      </h1>
+      <p style="margin: 5px 0 0 0; font-size: 14px;">Entrega Final - MongoDB</p>
+    </div>
+    <button id="cartLink" onclick="goToCart()" style="background:none; border:none; color:white; text-decoration:none; font-size:20px; display:flex; align-items:center; gap:8px; cursor:pointer;">
+      🛒 <span id="cartCount" style="background:#e74c3c; padding:4px 8px; border-radius:4px; font-size:12px;">0</span>
+    </button>
+  </header>
+
+  {{{body}}}
+
+  <!-- Product Detail Modal -->
+  <div id="productDetailModal" class="cp-modal" aria-hidden="true">
+    <div class="cp-modal-content">
+      <button class="cp-modal-close" data-action="close-modal" data-target="productDetailModal">✕</button>
+      <h2 class="pd-title">Título</h2>
+      <p class="pd-desc">Descripción</p>
+      <p><strong>Precio:</strong> <span class="pd-price">$0</span></p>
+      <p><strong>Categoría:</strong> <span class="pd-category"></span></p>
+      <p><strong>Stock:</strong> <span class="pd-stock">0</span></p>
+      <p><strong>Estado:</strong> <span class="pd-status"></span></p>
+      <p><strong>Código:</strong> <span class="pd-code"></span></p>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" data-action="edit" data-pid="">Editar</button>
+        <button class="btn btn-secondary" data-action="close-modal" data-target="productDetailModal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Edit Modal -->
+  <div id="productEditModal" class="cp-modal" aria-hidden="true">
+    <div class="cp-modal-content">
+      <button class="cp-modal-close" data-action="close-modal" data-target="productEditModal">✕</button>
+      <h2>Editar Producto</h2>
+      <form id="productEditForm">
+        <input type="hidden" name="pid" value="" />
+        <div>
+          <label>Título</label>
+          <input name="title" type="text" required />
+        </div>
+        <div>
+          <label>Descripción</label>
+          <textarea name="description" required></textarea>
+        </div>
+        <div>
+          <label>Código</label>
+          <input name="code" type="text" required />
+        </div>
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1;"><label>Precio</label><input name="price" type="number" step="0.01" required /></div>
+          <div style="flex:1;"><label>Stock</label><input name="stock" type="number" required /></div>
+        </div>
+        <div>
+          <label>Categoría</label>
+          <input name="category" type="text" required />
+        </div>
+        <div style="margin-top:8px;">
+          <label><input name="status" type="checkbox" /> Activo</label>
+        </div>
+        <div style="margin-top:12px;">
+          <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer style="background-color: #2c3e50; color: white; padding: 20px; text-align: center; margin-top: 40px;">
+    <p>&copy; 2026 Ecommerce. Todos los derechos reservados.</p>
+  </footer>
+</body>
 </html>
+
