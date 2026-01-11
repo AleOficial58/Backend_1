@@ -99,6 +99,44 @@ if (typeof io !== 'undefined') {
       }
     }
   });
+  
+  // Listener para nuevos productos agregados desde el panel admin
+  socket.on('newProduct', (product) => {
+    const grid = document.querySelector('.products-grid');
+    if (!grid) return; // Solo si estamos en página de productos
+    
+    // Crear HTML de la nueva tarjeta de producto
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.dataset.pid = product._id;
+    card.innerHTML = `
+      <h2 class="p-title">${product.title || ''}</h2>
+      <p class="description">${product.description || ''}</p>
+      <p class="price"><strong>Precio:</strong> <span class="p-price">$${product.price ?? '0'}</span></p>
+      <p class="category"><strong>Categoría:</strong> <span class="p-category">${product.category || ''}</span></p>
+      <p class="stock"><strong>Stock:</strong> <span class="p-stock">${product.stock ?? 0}</span></p>
+      <p class="status">
+        <strong>Estado:</strong> 
+        <span class="p-status" style="background:${product.status ? '#27ae60' : '#e74c3c'}; color:white; padding:4px 8px; border-radius:4px; font-size:12px; display:inline-block;">${product.status ? 'Activo' : 'Inactivo'}</span>
+      </p>
+      <div class="product-actions">
+        <a href="#" class="btn btn-info" data-action="detail" data-pid="${product._id}">Ver Detalles</a>
+        ${product.status ? `<button class="btn btn-success" data-action="add-to-cart" data-pid="${product._id}">Agregar al Carrito</button>` : ''}
+      </div>
+    `;
+    
+    grid.appendChild(card);
+  });
+  
+  // Listener para productos eliminados desde el panel admin
+  socket.on('deleteProduct', (productId) => {
+    const card = document.querySelector(`[data-pid="${productId}"]`);
+    if (card) {
+      card.style.opacity = '0';
+      card.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => card.remove(), 300);
+    }
+  });
 }
 
 // Fetch product by id and open detail modal

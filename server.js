@@ -66,9 +66,12 @@ io.on('connection', (socket) => {
     try {
       // basic server-side validation
       if (!data.title || !data.description) return;
-      await pm.addProduct(data);
+      const newProd = await pm.addProduct(data);
       const result = await pm.getAll();
+      // Emitir updateProducts para actualizar lista completa
       io.emit('updateProducts', result.payload);
+      // También emitir newProduct específicamente con el nuevo producto
+      io.emit('newProduct', newProd);
     } catch (err) {
       console.error('error newProduct', err);
     }
@@ -79,7 +82,10 @@ io.on('connection', (socket) => {
     try {
       await pm.deleteProduct(id);
       const result = await pm.getAll();
+      // Emitir updateProducts para actualizar lista completa
       io.emit('updateProducts', result.payload);
+      // También emitir deleteProduct específicamente
+      io.emit('deleteProduct', id);
     } catch (err) {
       console.error('error deleteProduct', err);
     }
